@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🐶 Perrito Aleatorio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f5f5f5;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐕 Imagen de Perrito Aleatorio</h1>
+  <button onclick="getDog()">Ver otro perrito</button>
+  <div>
+    <img id="dogImage" src="" alt="Imagen de perrito"/>
+  </div>
+
+  <script>
+    async function getDog() {
+      try {
+        const response = await fetch('/dog');
+        const data = await response.json();
+        document.getElementById('dogImage').src = data.image;
+      } catch (error) {
+        alert("Error al obtener el perrito 😢");
+      }
+    }
+
+    // Cargar uno al inicio
+    getDog();
+  </script>
+</body>
+</html>
