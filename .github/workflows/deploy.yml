@@ -1,0 +1,33 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Crear archivo PEM
+      run: |
+        echo "${{ secrets.EC2_KEY }}" > key.pem
+        chmod 600 key.pem
+
+    - name: Conectar por SSH y hacer deploy
+      run: |
+        ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          docker rm -f dog-app || true
+          docker rmi -f dog-app || true
+          cd ~/app || mkdir ~/app && cd ~/app
+          git clone https://github.com/${{ github.repository }} repo || true
+          cd repo
+          git pull origin main
+          cd backend
+          docker build -t dog-app .
+          docker run -d -p 3000:3000 --name dog-app dog-app
+        EOF
