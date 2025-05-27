@@ -20,5 +20,5 @@ app.get('/dog', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://54.211.246.137:${PORT}`);
 });
